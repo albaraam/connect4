@@ -33,7 +33,7 @@
 		}
 	};
 
-	this._setBlock = function(column) {
+	this.setBlock = function(column) {
 		player = self.currentPlayer;
 		var row = self.columns_last_row[column];
 		if (row == -1) {
@@ -93,8 +93,8 @@
 			winningBlocks = {};
 			winningBlocks.horizontal = [];
 			winningBlocks.vertical = [];
-			winningBlocks.diagonal_right = [];
-			winningBlocks.diagonal_left = [];
+			winningBlocks.diagonal_forward = [];
+			winningBlocks.diagonal_backword = [];
 
 			for(j=0;j<=3;j++)
 			{
@@ -108,37 +108,23 @@
 				}
 				if (self._getBlock(column-i+j,row-i+j) == currentPlayerID) {
 					total3++;
-					winningBlocks.diagonal_right.push([column-i+j,row-i+j]);
+					winningBlocks.diagonal_forward.push([column-i+j,row-i+j]);
 				}
 				if (self._getBlock(column-j+i,row-i+j) == currentPlayerID) {
 					total4++;
-					winningBlocks.diagonal_left.push([column-j+i,row-i+j]);
+					winningBlocks.diagonal_backword.push([column-j+i,row-i+j]);
 				}
-
-				/*if (self._getBlock(column-i+j,row) == otherPlayerID) {total12++;}
-				if (self._getBlock(column,row-i+j) == otherPlayerID) {total22++;}
-				if (self._getBlock(column-i+j,row-i+j) == otherPlayerID) {total32++;}
-				if (self._getBlock(column+i-j,row-i+j) == otherPlayerID) {total42++;}
-				if (self._getBlock(column-i+j,row) == -1) {total12++;}
-				if (self._getBlock(column,row-i+j) == -1) {total22++;}
-				if (self._getBlock(column-i+j,row-i+j) == -1) {total32++;}
-				if (self._getBlock(column+i-j,row-i+j) == -1) {total42++;}*/
 			}
 			if ((total1 >= 4) && (total12 === 0)) {result = true;} else
 			if ((total2 >= 4) && (total22 === 0)) {result = true;} else
 			if ((total3 >= 4) && (total32 === 0)) {result = true;} else
 			if ((total4 >= 4) && (total42 === 0)) result = true;
-			/*console.log(winningBlocks);
-			console.log(total1 + ' - ' + total12);
-			console.log(total2 + ' - ' + total22);
-			console.log(total3 + ' - ' + total32);
-			console.log(total4 + ' - ' + total42);*/
 		}
 		if(result){
 			if(winningBlocks.horizontal.length >= 4){ self.winningBlocks = winningBlocks.horizontal; }
 			if(winningBlocks.vertical.length >= 4){ self.winningBlocks = winningBlocks.vertical; }
-			if(winningBlocks.diagonal_right.length >= 4){ self.winningBlocks = winningBlocks.diagonal_right; }
-			if(winningBlocks.diagonal_left.length >= 4){ self.winningBlocks = winningBlocks.diagonal_left; }
+			if(winningBlocks.diagonal_forward.length >= 4){ self.winningBlocks = winningBlocks.diagonal_forward; }
+			if(winningBlocks.diagonal_backword.length >= 4){ self.winningBlocks = winningBlocks.diagonal_backword; }
 		}
 		return result;
 	};
@@ -174,7 +160,7 @@
 	};
 
 	return {
-		setBlock: this._setBlock,
+		setBlock: this.setBlock,
 		on: this.on,
 		getCurrentPlayer: this.getCurrentPlayer
 	};
