@@ -2,6 +2,7 @@ var Connect4Game = (function () {
 
 	var _connect4 = null;
 	var _players = [];
+	var _IS_GAME_OVER = false;
 
 	var _board_rows_number = 6;
 	var _board_columns_number = 7;
@@ -81,7 +82,9 @@ var Connect4Game = (function () {
 	 * Used as callback for board (columns) click listeners
 	 */
 	var _dropBlock = function(event){
-		_connect4.setBlock($(event.target).attr("data-col"));
+		if(!_IS_GAME_OVER){
+			_connect4.setBlock($(event.target).attr("data-col"));
+		}
 	};
 
 	/**
@@ -113,6 +116,7 @@ var Connect4Game = (function () {
 	};
 
 	var _showWinPopup = function (data) {
+		_IS_GAME_OVER = true;
 		_highlightWinningBlocks(data.winningBlocks);
 		// TODO: replace alert with a fancy popup
 		if (confirm(data.winner.name+" Win \n" + "Do you want to play again?")) {
@@ -122,6 +126,7 @@ var Connect4Game = (function () {
 	};
 
 	var _showDrawPopup = function (data) {
+		_IS_GAME_OVER = true;
 		// TODO: replace alert with a fancy popup
 		alert("Draw Game, Nobody Win");
 		// TODO: reset or restart the game instead of reloading the page
