@@ -1,9 +1,9 @@
  var Connect4 = function (config) {
-	self = this;
-	this.config = config;
-	this.columns_number = 7;
-	this.rows_number = 6;
-	this.board = [
+	config = config || {};
+
+	var _columns_number = 7;
+	var _rows_number = 6;
+	var _board = [
 		[0,0,0,0,0,0],
 		[0,0,0,0,0,0],
 		[0,0,0,0,0,0],
@@ -12,64 +12,63 @@
 		[0,0,0,0,0,0],
 		[0,0,0,0,0,0],
 	];
-	this.columns_last_row = [(this.rows_number-1),(this.rows_number-1),(this.rows_number-1),(this.rows_number-1),(this.rows_number-1),(this.rows_number-1),(this.rows_number-1)];
-	this.players = config.players;
-	this.currentPlayer = this.players[0];
-	this.winner = null;
-	this.winningBlocks = [];
-	this.IS_GAMR_OVER = false;
+	var _columns_last_row = [(_rows_number-1),(_rows_number-1),(_rows_number-1),(_rows_number-1),(_rows_number-1),(_rows_number-1),(_rows_number-1)];
+	var _players = config.players || [new Player(), new Player()];
+	var _currentPlayer = _players[0];
+	var _winningBlocks = [];
+	var _IS_GAMR_OVER = false;
 
 	/*
 	 * Connect4 events // move:end, game:win, game:draw
 	 */
-	this._events = {};
+	var _events = {};
 
-	this._getBlock = function(column,row) {
+	var _getBlock = function(column,row) {
 		if ((column < 0) || (column > 6) || (row < 0) || (row > 5)) 
 		{
 			return -1;
 		}else{
-			return this.board[column][row];
+			return _board[column][row];
 		}
 	};
 
-	this.setBlock = function(column) {
-		player = self.currentPlayer;
-		var row = self.columns_last_row[column];
+	var setBlock = function(column) {
+		player = _currentPlayer;
+		var row = _columns_last_row[column];
 		if (row == -1) {
-			self._publish("move:end",{column: column, row: row, player: player, is_column_full: true});
+			_publish("move:end",{column: column, row: row, player: player, is_column_full: true});
 		} else {
-			self.board[column][row] = player.id;
-			self.columns_last_row[column] = row - 1;
-			self._publish("move:end",{column: column, row: row, player: player, is_column_full: false});
-			if (self._checkIfWin(column,row,player) === true)
+			_board[column][row] = player.id;
+			_columns_last_row[column] = row - 1;
+			_publish("move:end",{column: column, row: row, player: player, is_column_full: false});
+			if (_checkIfWin(column,row,player) === true)
 			{
-				self.IS_GAMR_OVER = true;
-				self._publish("game:win",{winningBlocks: self.winningBlocks, winner: player});
+				_IS_GAMR_OVER = true;
+				_publish("game:win",{winningBlocks: winningBlocks, winner: player});
 			}
-			if (self._checkGameEnded()) 
+			if (_checkGameEnded()) 
 			{
-				self.IS_GAMR_OVER = true;
-				self._publish("game:draw",{});
+				_IS_GAMR_OVER = true;
+				_publish("game:draw",{});
 			}
-			if (self.IS_GAMR_OVER !== true) {
-				self._switchPlayer();
+			if (_IS_GAMR_OVER !== true) {
+				_switchPlayer();
 			}
 				
 		}
 	};
 
-	this._checkGameEnded = function() {
-		return ((self.columns_last_row[0] == -1) && 
-				(self.columns_last_row[1] == -1) && 
-				(self.columns_last_row[2] == -1) && 
-				(self.columns_last_row[3] == -1) && 
-				(self.columns_last_row[4] == -1) && 
-				(self.columns_last_row[5] == -1) && 
-				(self.columns_last_row[6] == -1));
+	var _checkGameEnded = function() {
+		return ((_columns_last_row[0] == -1) && 
+				(_columns_last_row[1] == -1) && 
+				(_columns_last_row[2] == -1) && 
+				(_columns_last_row[3] == -1) && 
+				(_columns_last_row[4] == -1) && 
+				(_columns_last_row[5] == -1) && 
+				(_columns_last_row[6] == -1));
 	};
 
-	this._checkIfWin = function(column,row,player) {
+	var _checkIfWin = function(column,row,player) {
 		var i,j;
 		var total1,total2,total3,total4;
 		var total12,total22,total32,total42;
@@ -94,19 +93,23 @@
 
 			for(j=0;j<=3;j++)
 			{
-				if (self._getBlock(column-i+j,row) == currentPlayerID) {
+				// Check horizontally for win
+				if (_getBlock(column-i+j,row) == currentPlayerID) {
 					total1++;
 					winningBlocks.horizontal.push([column-i+j,row]);
 				}
-				if (self._getBlock(column,row-i+j) == currentPlayerID) {
+				// Check vertically for win
+				if (_getBlock(column,row-i+j) == currentPlayerID) {
 					total2++;
 					winningBlocks.vertical.push([column,row-i+j]);
 				}
-				if (self._getBlock(column-i+j,row-i+j) == currentPlayerID) {
+				// Check on the forward diagonal (/) for win
+				if (_getBlock(column-i+j,row-i+j) == currentPlayerID) {
 					total3++;
 					winningBlocks.diagonal_forward.push([column-i+j,row-i+j]);
 				}
-				if (self._getBlock(column-j+i,row-i+j) == currentPlayerID) {
+				// Check on the backward diagonal (\) for win
+				if (_getBlock(column-j+i,row-i+j) == currentPlayerID) {
 					total4++;
 					winningBlocks.diagonal_backword.push([column-j+i,row-i+j]);
 				}
@@ -116,48 +119,43 @@
 			if (total3 == 4) {result = true;} else
 			if (total4 == 4) result = true;
 			if(result){
-				if(winningBlocks.horizontal.length == 4){ self.winningBlocks = winningBlocks.horizontal; }
-				if(winningBlocks.vertical.length == 4){ self.winningBlocks = winningBlocks.vertical; }
-				if(winningBlocks.diagonal_forward.length == 4){ self.winningBlocks = winningBlocks.diagonal_forward; }
-				if(winningBlocks.diagonal_backword.length >= 4){ self.winningBlocks = winningBlocks.diagonal_backword; }
+				if(winningBlocks.horizontal.length == 4){ _winningBlocks = winningBlocks.horizontal; }
+				if(winningBlocks.vertical.length == 4){ _winningBlocks = winningBlocks.vertical; }
+				if(winningBlocks.diagonal_forward.length == 4){ _winningBlocks = winningBlocks.diagonal_forward; }
+				if(winningBlocks.diagonal_backword.length >= 4){ _winningBlocks = winningBlocks.diagonal_backword; }
 			}
 		}
 		return result;
 	};
 
-	this._switchPlayer = function() {
-		var index = self.players.indexOf(self.currentPlayer) + 1;
+	var _switchPlayer = function() {
+		var index = _players.indexOf(_currentPlayer) + 1;
 		// if it's the last player in the turn, get back to the first player
-		if(index == (self.players.length)){
+		if(index == (_players.length)){
 			index = 0;
 		}
-		self.currentPlayer = self.players[index];
+		_currentPlayer = _players[index];
 	};
 
-	this.on = function(event, handler){
+	var on = function(event, handler){
 		// create the event if not yet created
-		self._events[event] = self._events[event] || [];
+		_events[event] = _events[event] || [];
 		// add the handler
-    	self._events[event].push(handler);
+    	_events[event].push(handler);
 	};
 
-	this._publish = function (event,args) {
+	var _publish = function (event,args) {
 		// return if the event doesn't exist, or there are no handlers
-	    if(!self._events[event] || self._events[event].length < 1) return;
+	    if(!_events[event] || _events[event].length < 1) return;
 
 	    // send the event to all handlers
-	    self._events[event].forEach(function(handler) {
+	    _events[event].forEach(function(handler) {
 	      	handler(args || {});
 	    });
 	};
 
-	this.getCurrentPlayer = function () {
-		return self.currentPlayer;
-	};
-
 	return {
-		setBlock: this.setBlock,
-		on: this.on,
-		getCurrentPlayer: this.getCurrentPlayer
+		setBlock: setBlock,
+		on: on
 	};
 };

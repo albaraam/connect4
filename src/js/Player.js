@@ -11,7 +11,7 @@ var Player = (function() {
 	return function Player(name) {
 		// auto id
 		this.id = nextId;
-		this.name = (name !== null && name !== '') ? name : 'Player '+nextId;
+		this.name = (name !== null && name !== '' && name !== 'undefined') ? name : 'Player '+nextId;
 		this.color = getRandomColor();
 		// auto increment
 		nextId++;
