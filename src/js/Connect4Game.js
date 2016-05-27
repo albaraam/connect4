@@ -106,11 +106,19 @@ var Connect4Game = (function () {
 		}
 	};
 
+	var _highlightWinningBlocks = function (winningBlocks) {
+		for (var i = 0; i < winningBlocks.length; i++) {
+			$("#block"+winningBlocks[i][0]+winningBlocks[i][1]).addClass("winning");
+		}
+	};
+
 	var _showWinPopup = function (data) {
+		_highlightWinningBlocks(data.winningBlocks);
 		// TODO: replace alert with a fancy popup
-		alert(data.winner.name+" Win");
-		// TODO: reset or restart the game instead of reloading the page
-		location.reload();
+		if (confirm(data.winner.name+" Win \n" + "Do you want to play again?")) {
+			// TODO: reset or restart the game instead of reloading the page
+			 location.reload();
+		}
 	};
 
 	var _showDrawPopup = function (data) {

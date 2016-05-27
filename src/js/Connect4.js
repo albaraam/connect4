@@ -44,7 +44,7 @@
 			if (_checkIfWin(column,row,player) === true)
 			{
 				_IS_GAMR_OVER = true;
-				_publish("game:win",{winningBlocks: winningBlocks, winner: player});
+				_publish("game:win",{winningBlocks: _winningBlocks, winner: player});
 			}
 			if (_checkGameEnded()) 
 			{
@@ -114,15 +114,15 @@
 					winningBlocks.diagonal_backword.push([column-j+i,row-i+j]);
 				}
 			}
-			if (total1 == 4) {result = true;} else
-			if (total2 == 4) {result = true;} else
-			if (total3 == 4) {result = true;} else
-			if (total4 == 4) result = true;
+			if (total1 == 4) {result = true; _winningBlocks = winningBlocks.horizontal;} else
+			if (total2 == 4) {result = true; _winningBlocks = winningBlocks.vertical;} else
+			if (total3 == 4) {result = true; _winningBlocks = winningBlocks.diagonal_forward;} else
+			if (total4 == 4) {result = true; _winningBlocks = winningBlocks.diagonal_backword;}
 			if(result){
-				if(winningBlocks.horizontal.length == 4){ _winningBlocks = winningBlocks.horizontal; }
-				if(winningBlocks.vertical.length == 4){ _winningBlocks = winningBlocks.vertical; }
-				if(winningBlocks.diagonal_forward.length == 4){ _winningBlocks = winningBlocks.diagonal_forward; }
-				if(winningBlocks.diagonal_backword.length >= 4){ _winningBlocks = winningBlocks.diagonal_backword; }
+				if(winningBlocks.horizontal.length == 4){  }
+				if(winningBlocks.vertical.length == 4){  }
+				if(winningBlocks.diagonal_forward.length == 4){  }
+				if(winningBlocks.diagonal_backword.length >= 4){  }
 			}
 		}
 		return result;
