@@ -1,5 +1,6 @@
 var gulp = require('gulp');
 var sass = require('gulp-sass');
+var autoprefixer = require('gulp-autoprefixer');
 var browserSync = require('browser-sync').create();
 var useref = require('gulp-useref');
 var uglify = require('gulp-uglify');
@@ -14,6 +15,7 @@ var runSequence = require('run-sequence');
 gulp.task('sass', function(){
   return gulp.src('src/scss/**/*.scss')
     .pipe(sass()) // Using gulp-sass
+    .pipe(autoprefixer())
     .pipe(gulp.dest('src/css'))
     .pipe(browserSync.reload({
       stream: true
