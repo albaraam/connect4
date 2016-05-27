@@ -40,11 +40,6 @@ gulp.task('browserSync', function() {
   })
 });
 
-gulp.task('images', function() {
-  return gulp.src('src/images/**/*')
-  .pipe(gulp.dest('dist/images'))
-});
-
 gulp.task('useref', function(){
   return gulp.src('src/**/*.html')
     .pipe(useref())
@@ -65,7 +60,7 @@ gulp.task('clean:dist', function() {
 
 gulp.task('build', function (callback) {
   runSequence('clean:dist', 
-    ['sass', 'useref', 'images'],
+    ['sass', 'useref'],
     callback
   )
 });
