@@ -30,40 +30,14 @@ html, body {
     left: 0;
     width: 100%;
     height: 100%; }
-
-.col {
-  width: 100%;
-  height: 100%;
-  background: #ccc;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer; }
-
-.col {
-  width: 60px;
-  height: 370px;
-  display: flex;
-  flex-direction: column;
-  z-index: 10; }
-
-.board__col__block {
-  width: 60px;
-  height: 60px;
-  box-sizing: border-box;
-  border-radius: 50%;
-  background: #fff; }
-
-.block {
-  position: absolute;
-  top: 0;
-  transition-delay: 0.2s;
-  transition: all 0.5s;
-  border-radius: 50%;
-  width: 55px;
-  height: 55px;
-  border: 5px solid #fff;
-  box-sizing: border-box;
-  z-index: 100; }
-
-.block img {
-  display: none; }
+    .board__blocks-wrapper .block {
+      position: absolute;
+      top: 0;
+      transition-delay: 0.2s;
+      transition: all 0.5s;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      border: 5px solid #fff;
+      box-sizing: border-box;
+      z-index: 100; }

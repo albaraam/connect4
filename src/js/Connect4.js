@@ -85,10 +85,6 @@
 			total2 = 0;
 			total3 = 0;
 			total4 = 0;
-			total12 = 0;
-			total22 = 0;
-			total32 = 0;
-			total42 = 0;
 
 			winningBlocks = {};
 			winningBlocks.horizontal = [];
@@ -115,16 +111,16 @@
 					winningBlocks.diagonal_backword.push([column-j+i,row-i+j]);
 				}
 			}
-			if ((total1 >= 4) && (total12 === 0)) {result = true;} else
-			if ((total2 >= 4) && (total22 === 0)) {result = true;} else
-			if ((total3 >= 4) && (total32 === 0)) {result = true;} else
-			if ((total4 >= 4) && (total42 === 0)) result = true;
-		}
-		if(result){
-			if(winningBlocks.horizontal.length >= 4){ self.winningBlocks = winningBlocks.horizontal; }
-			if(winningBlocks.vertical.length >= 4){ self.winningBlocks = winningBlocks.vertical; }
-			if(winningBlocks.diagonal_forward.length >= 4){ self.winningBlocks = winningBlocks.diagonal_forward; }
-			if(winningBlocks.diagonal_backword.length >= 4){ self.winningBlocks = winningBlocks.diagonal_backword; }
+			if (total1 == 4) {result = true;} else
+			if (total2 == 4) {result = true;} else
+			if (total3 == 4) {result = true;} else
+			if (total4 == 4) result = true;
+			if(result){
+				if(winningBlocks.horizontal.length == 4){ self.winningBlocks = winningBlocks.horizontal; }
+				if(winningBlocks.vertical.length == 4){ self.winningBlocks = winningBlocks.vertical; }
+				if(winningBlocks.diagonal_forward.length == 4){ self.winningBlocks = winningBlocks.diagonal_forward; }
+				if(winningBlocks.diagonal_backword.length >= 4){ self.winningBlocks = winningBlocks.diagonal_backword; }
+			}
 		}
 		return result;
 	};
