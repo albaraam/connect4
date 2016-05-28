@@ -141,6 +141,7 @@ var Connect4Game = (function () {
 	var _setConfig = function (config) {
 		_board_columns_number = config.columns || 7;
 		_board_rows_number = config.rows || 6;
+		_board_selector =  config.board_selector || 'body';
 	};
 
 	/**
