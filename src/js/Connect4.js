@@ -1,18 +1,10 @@
  var Connect4 = function (config) {
 	config = config || {};
 
-	var _columns_number = 7;
-	var _rows_number = 6;
-	var _board = [
-		[0,0,0,0,0,0],
-		[0,0,0,0,0,0],
-		[0,0,0,0,0,0],
-		[0,0,0,0,0,0],
-		[0,0,0,0,0,0],
-		[0,0,0,0,0,0],
-		[0,0,0,0,0,0],
-	];
-	var _columns_last_row = [(_rows_number-1),(_rows_number-1),(_rows_number-1),(_rows_number-1),(_rows_number-1),(_rows_number-1),(_rows_number-1)];
+	var _columns_number = config.columns || 7;
+	var _rows_number = config.rows || 6;
+	var _board = [];
+	var _columns_last_row = [];
 	var _players = config.players || [new Player(), new Player()];
 	var _currentPlayer = _players[0];
 	var _winningBlocks = [];
@@ -23,8 +15,22 @@
 	 */
 	var _events = {};
 
+	var _init = function () {
+		// generate the board
+		for (var i = 0; i < _columns_number; i++) {
+			_board[i] = [];
+			for (var j = 0; j < _columns_number; j++) {
+				_board[i][j] = 0;
+			}
+		}
+		// generate _columns_last_row
+		for (var k = 0; k < _columns_number; k++) {
+			_columns_last_row[k] = (_rows_number-1);
+		}
+	};
+
 	var _getBlock = function(column,row) {
-		if ((column < 0) || (column > 6) || (row < 0) || (row > 5)) 
+		if ((column < 0) || (column > (_columns_number - 1)) || (row < 0) || (row > (_rows_number - 1))) 
 		{
 			return -1;
 		}else{
@@ -59,13 +65,12 @@
 	};
 
 	var _checkGameEnded = function() {
-		return ((_columns_last_row[0] == -1) && 
-				(_columns_last_row[1] == -1) && 
-				(_columns_last_row[2] == -1) && 
-				(_columns_last_row[3] == -1) && 
-				(_columns_last_row[4] == -1) && 
-				(_columns_last_row[5] == -1) && 
-				(_columns_last_row[6] == -1));
+		for (var i = 0; i < _columns_number; i++) {
+			if(_columns_last_row[i] != -1){
+				return false;
+			}
+		}
+		return true;
 	};
 
 	var _checkIfWin = function(column,row,player) {
@@ -153,6 +158,9 @@
 	      	handler(args || {});
 	    });
 	};
+
+	// initialization
+	_init();
 
 	return {
 		setBlock: setBlock,

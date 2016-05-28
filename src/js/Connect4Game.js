@@ -137,6 +137,12 @@ var Connect4Game = (function () {
 		// TODO: 
 	};
 
+
+	var _setConfig = function (config) {
+		_board_columns_number = config.columns || 7;
+		_board_rows_number = config.rows || 6;
+	};
+
 	/**
 	 * Start the gae
 	 *
@@ -145,6 +151,9 @@ var Connect4Game = (function () {
 	 */
 	var start = function (config) {
 		config = config || {};
+
+		_setConfig(config);
+
 		var number_of_players = 2;
 		if(config.multi){
 			number_of_players = parseInt(prompt('How many players? (min: 2 , max: 4)'));
@@ -159,7 +168,9 @@ var Connect4Game = (function () {
 		}
 		// create conncet4 instance
 		_connect4 = new Connect4({
-			players: _players
+			players: _players,
+			columns: _board_columns_number,
+			rows: _board_rows_number
 		});
 		// subscribe to connect4 instance events
 		_connect4.on('move:end',_renderBlock);
