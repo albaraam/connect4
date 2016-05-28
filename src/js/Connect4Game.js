@@ -145,8 +145,15 @@ var Connect4Game = (function () {
 	 */
 	var start = function (config) {
 		config = config || {};
+		var number_of_players = 2;
+		if(config.multi){
+			number_of_players = parseInt(prompt('How many players? (min: 2 , max: 4)'));
+			// if number_of_players was string (not int) or less than 2
+			if(isNaN(number_of_players) || number_of_players < 2) number_of_players = 2;
+			else if(number_of_players > 4) number_of_players = 4;
+		}
 		// Add Players
-		for (var i = 1; i <= 2; i++) {
+		for (var i = 1; i <= number_of_players; i++) {
 			var playerName = prompt("Enter Player "+i+" name:");
 			_players.push(new Player(playerName));
 		}

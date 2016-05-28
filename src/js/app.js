@@ -1,1 +1,3 @@
-Connect4Game.start();
+Connect4Game.start({
+	multi: true
+});
